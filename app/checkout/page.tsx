@@ -18,11 +18,32 @@ export default async function CheckoutPage() {
     include: {
       items: {
         include: {
-          product: true,
+          product: {
+            include: {
+              images: {
+                orderBy: {
+                  position: "asc", // เรียงตามลำดับรูป
+                },
+              },
+            },
+          },
         },
       },
     },
   });
+
+  // const cart = await prisma.cart.findUnique({
+  //   where: {
+  //     userId: session.user.id,
+  //   },
+  //   include: {
+  //     items: {
+  //       include: {
+  //         product: true,
+  //       },
+  //     },
+  //   },
+  // });
 
   const items = cart?.items ?? [];
 
@@ -74,9 +95,9 @@ export default async function CheckoutPage() {
                   className="flex gap-4"
                 >
                   <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                    {item.product.image ? (
+                    {item.product.images[0].url ? (
                       <img
-                        src={item.product.image}
+                        src={item.product.images[0].url}
                         alt={item.product.name}
                         className="h-full w-full object-cover"
                       />

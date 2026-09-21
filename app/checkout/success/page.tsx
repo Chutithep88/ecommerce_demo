@@ -30,6 +30,9 @@ export default async function CheckoutSuccess({
             id: params.order,
             userId: session.user.id,
         },
+        include: {
+            payment: true,
+        }
     });
 
     if (!order) {
